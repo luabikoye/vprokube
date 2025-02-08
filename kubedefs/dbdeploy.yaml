@@ -5,34 +5,34 @@ metadata:
   labels:
     app: vprodb
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: vprodb
+  replicas: 1
   template:
     metadata:
       labels:
         app: vprodb
     spec:
       containers:
-        - name: vprodb
-          image: vprocontainers/vprofiledb
-          volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: vp-db-data
-          ports:
-            - name: vprodb-port
-              containerPort: 3306
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: db-pass
+      - name: vprodb
+        image: vprocontainers/vprofiledb
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: vpro-db-data
+        ports:
+        - name: vprodb-port
+          containerPort: 3306
+        env:
+         - name: MYSQL_ROOT_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: app-secret
+               key: db-pass
       volumes:
         - name: vpro-db-data
           persistentVolumeClaim:
-            claimName: db-pv-claim
+            claimName: db-pv-claim 
 
       initContainers:
         - name: busybox
